@@ -1,4 +1,5 @@
-TextSpritzer
+SpritzerTextView
 ============
 
-Simple SpritzTextView based on the [OpenSpritz-Android Project](https://github.com/OnlyInAmerica/OpenSpritz-Android)
+A simple TextView wrapper that used the Spritzer from  [OpenSpritz-Android](https://github.com/OnlyInAmerica/OpenSpritz-Android)
+
