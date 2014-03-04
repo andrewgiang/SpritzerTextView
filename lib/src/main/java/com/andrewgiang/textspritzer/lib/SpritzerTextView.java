@@ -25,6 +25,9 @@ public class SpritzerTextView extends TextView{
         init();
     }
 
+    public void setWpm(int wpm){
+        mSpritzer.setWpm(wpm);
+    }
     /**
      * Set a custom spritzer
      * @param spritzer
