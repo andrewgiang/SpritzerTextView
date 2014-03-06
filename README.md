@@ -34,8 +34,6 @@ Set Spritz Text and play or pause
  view.setSpritzText("add the spritz text here");
  view.play(); // Play the text set in method setSpritzText()
  view.pause(); // Pauses the spritzer can be resumed with the play() method
-
-
 ```
 
 
