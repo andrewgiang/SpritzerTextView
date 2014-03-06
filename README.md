@@ -1,7 +1,9 @@
 SpritzerTextView
 ============
 
-A simplified TextView wrapper that uses the Spritzer from  [OpenSpritz-Android](https://github.com/OnlyInAmerica/OpenSpritz-Android) to "spritz" text.
+A simplified TextView wrapper that uses the Spritzer from  [OpenSpritz-Android](https://github.com/OnlyInAmerica/OpenSpritz-Android) to "spritz" text. 
+
+Note: This library has nothing to do with SpritzInc. 
 
 ![SpritzerTextView example](http://i.imgur.com/YcTLX9Z.gif)
 
