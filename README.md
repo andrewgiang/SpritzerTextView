@@ -28,6 +28,16 @@ Add to your layout
         />
 ```
 
+Set Spritz Text and play or pause
+```
+ final SpritzerTextView view = (SpritzerTextView) findViewById(R.id.spritzTV);
+ view.setSpritzText("add the spritz text here");
+ view.play(); // Play the text set in method setSpritzText()
+ view.pause(); // Pauses the spritzer can be resumed with the play() method
+
+
+```
+
 
 Contributing
 ------------
