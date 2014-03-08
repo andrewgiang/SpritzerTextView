@@ -5,6 +5,7 @@ import android.os.Message;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.TextAppearanceSpan;
+import android.util.Log;
 import android.widget.TextView;
 
 import java.lang.ref.WeakReference;
@@ -18,8 +19,11 @@ import java.util.Arrays;
  */
 public class Spritzer {
     protected static final String TAG = "Spritzer";
+    protected static final boolean VERBOSE = false;
+
     protected static final int MSG_PRINT_WORD = 1;
 
+    protected static final int CHARS_LEFT_OF_PIVOT = 3;
     protected String[] mWordArray;                  // The current list of words
     protected ArrayDeque<String> mWordQueue;        // The queue being actively displayed
     protected TextView mTarget;
@@ -30,7 +34,6 @@ public class Spritzer {
     protected boolean mPlayingRequested;
     protected boolean mSpritzThreadStarted;
 
-    //protected EventBus mEventBus;
 
     public Spritzer(TextView target) {
         init();
@@ -39,14 +42,11 @@ public class Spritzer {
     }
 
     public void setText(String input) {
-        pause();
         createWordArrayFromString(input);
         refillWordQueue();
     }
 
-//    public void setEventBus(EventBus bus) {
-//        mEventBus = bus;
-//    }
+
 
     private void createWordArrayFromString(String input) {
         mWordArray = input
@@ -60,6 +60,13 @@ public class Spritzer {
         mPlaying = false;
         mPlayingRequested = false;
         mSpritzThreadStarted = false;
+    }
+
+    public int getMinutesRemainingInQueue() {
+        if (mWordQueue.size() == 0) {
+            return 0;
+        }
+        return mWordQueue.size() / mWPM;
     }
 
     public void setWpm(int wpm) {
@@ -107,26 +114,46 @@ public class Spritzer {
                     Thread.sleep(getInterWordDelay());
                 }
             }
-        } else {
-            mPlaying = false;
-//            if (mEventBus != null) {
-//                mEventBus.post(new SpritzFinishedEvent());
-//            }
         }
     }
 
     private void printLastWord() {
-        if(mWordArray != null){
+        if (mWordArray != null) {
             printWord(mWordArray[mWordArray.length - 1]);
         }
     }
 
     private void printWord(String word) {
-        if (word.length() % 2 == 0) {
-            word += " ";
+        int startSpan = 0;
+        int endSpan = 0;
+        word = word.trim();
+        if (VERBOSE) Log.i(TAG + word.length(), word);
+        if (word.length() == 1) {
+            StringBuilder builder = new StringBuilder();
+            for (int x = 0; x < CHARS_LEFT_OF_PIVOT; x++) {
+                builder.append(" ");
+            }
+            builder.append(word);
+            word = builder.toString();
+            startSpan = CHARS_LEFT_OF_PIVOT;
+            endSpan =  startSpan + 1;
+        } else if ( word.length() <= CHARS_LEFT_OF_PIVOT * 2 ) {
+            StringBuilder builder = new StringBuilder();
+            int halfPoint = word.length() / 2;
+            int beginPad = CHARS_LEFT_OF_PIVOT - halfPoint;
+            for(int x = 0; x <= beginPad; x++) {
+                builder.append(" ");
+            }
+            builder.append(word);
+            word = builder.toString();
+            startSpan = halfPoint + beginPad;
+            endSpan = startSpan + 1;
+            if (VERBOSE) Log.i(TAG + word.length(), "pivot: " + word.substring(startSpan, endSpan));
+        } else {
+            startSpan = CHARS_LEFT_OF_PIVOT;
+            endSpan = startSpan + 1;
         }
-        int startSpan = word.length() / 2;
-        int endSpan = startSpan + 1;
+
         Spannable spanRange = new SpannableString(word);
         TextAppearanceSpan tas = new TextAppearanceSpan(mTarget.getContext(), R.style.PivotLetter);
         spanRange.setSpan(tas, startSpan, endSpan, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
@@ -147,15 +174,23 @@ public class Spritzer {
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
+                        if (VERBOSE)
+                            Log.i(TAG, "Starting spritzThread with queue length " + mWordQueue.size());
                         mPlaying = true;
                         mSpritzThreadStarted = true;
                         while (mPlayingRequested) {
                             try {
                                 processNextWord();
+                                if (mWordQueue.isEmpty()) {
+                                    if (VERBOSE)
+                                        Log.i(TAG, "Queue is empty after processNextWord. Pausing");
+                                    mPlayingRequested = false;
+                                }
                             } catch (InterruptedException e) {
                                 e.printStackTrace();
                             }
                         }
+                        if (VERBOSE) Log.i(TAG, "Stopping spritzThread");
                         mPlaying = false;
                         mSpritzThreadStarted = false;
 
@@ -167,8 +202,8 @@ public class Spritzer {
 
     private int delayMultiplierForWord(String word) {
         // double rest if length > 6 or contains (.,!?)
-        if (word.length() > 6 || word.contains(",") || word.contains(":") || word.contains(";") || word.contains(".") || word.contains("?") || word.contains("!") || word.contains("\"")) {
-            return 2;
+        if (word.length() >= 6 || word.contains(",") || word.contains(":") || word.contains(";") || word.contains(".") || word.contains("?") || word.contains("!") || word.contains("\"")) {
+            return 3;
         }
         return 1;
     }
