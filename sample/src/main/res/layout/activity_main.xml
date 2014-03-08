@@ -12,7 +12,6 @@
         android:id="@+id/spritzTV"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
         android:typeface="monospace"
         android:textSize="30sp"
         />
