@@ -34,9 +34,6 @@ Add to your layout
         />
 ```
 
-Note:  
-
-
 Set Spritz Text and play or pause
 
 
