@@ -1,5 +1,6 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingLeft="@dimen/activity_horizontal_margin"
@@ -15,6 +16,7 @@
         android:padding="10dp"
         android:typeface="monospace"
         android:textSize="30sp"
+        app:clickControls="true"
         />
 
     <Button
@@ -23,7 +25,8 @@
         android:text="Play"
         android:id="@+id/button"
         android:layout_alignTop="@+id/button2"
-        android:layout_alignParentLeft="true" />
+        android:layout_alignParentLeft="true"
+        />
 
     <Button
         android:layout_width="wrap_content"

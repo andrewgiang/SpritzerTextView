@@ -1,6 +1,7 @@
 package com.andrewgiang.textspritzer.lib;
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.util.AttributeSet;
@@ -23,12 +24,23 @@ public class SpritzerTextView extends TextView implements View.OnClickListener {
     }
     public SpritzerTextView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        init();
+        init(attrs);
     }
 
     public SpritzerTextView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
+        init(attrs);
+    }
+
+    private void init(AttributeSet attrs) {
+        final TypedArray a = getContext().getTheme().obtainStyledAttributes(attrs, R.styleable.SpritzerTextView, 0, 0);
+        try {
+            mDefaultClickListener = a.getBoolean(R.styleable.SpritzerTextView_clickControls, false);
+        }finally {
+            a.recycle();
+        }
         init();
+
     }
 
     private void init() {
