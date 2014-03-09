@@ -5,7 +5,7 @@ A simplified TextView wrapper that uses the Spritzer from  [OpenSpritz-Android](
 
 Note: This library has nothing to do with SpritzInc. 
 
-![SpritzerTextView example](http://i.imgur.com/YcTLX9Z.gif)
+![SpritzerTextView example](http://i.imgur.com/2fXxNcm.gif)
 
 Usage
 ------------
@@ -15,7 +15,7 @@ The library is released to maven central as an aar so all your need to do is add
 
 ```
 dependencies {  
-    compile 'com.andrewgiang.spritzertextview:library:0.0.1'
+    compile 'com.andrewgiang.spritzertextview:library:0.1.0'
 }
 ```
 
