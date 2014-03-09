@@ -5,7 +5,7 @@ A simplified TextView wrapper that uses the Spritzer from  [OpenSpritz-Android](
 
 Note: This library has nothing to do with SpritzInc. 
 
-![SpritzerTextView example](http://i.imgur.com/YcTLX9Z.gif)
+![SpritzerTextView example](http://i.imgur.com/2fXxNcm.gif)
 
 Usage
 ------------
