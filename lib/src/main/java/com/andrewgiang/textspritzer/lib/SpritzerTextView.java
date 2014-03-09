@@ -4,16 +4,18 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.util.AttributeSet;
+import android.view.View;
 import android.widget.TextView;
 
 /**
  * Created by andrewgiang on 3/3/14.
  */
-public class SpritzerTextView extends TextView{
+public class SpritzerTextView extends TextView implements View.OnClickListener {
 
     private  Spritzer mSpritzer;
     private Paint mPaintGuides;
     private Paint mPaintPivotIndicator;
+    private boolean mDefaultClickListener = false;
 
     public SpritzerTextView(Context context) {
         super(context);
@@ -51,8 +53,13 @@ public class SpritzerTextView extends TextView{
         mPaintPivotIndicator = new Paint(Paint.ANTI_ALIAS_FLAG);
         mPaintPivotIndicator.setStyle(Paint.Style.STROKE);
         mPaintPivotIndicator.setStrokeWidth(3);
+        if(mDefaultClickListener){
+            this.setOnClickListener(this);
+        }
 
     }
+
+
 
     @Override
     protected void onDraw(Canvas canvas) {
@@ -93,5 +100,15 @@ public class SpritzerTextView extends TextView{
     }
     public Spritzer getSpritzer(){
         return mSpritzer;
+    }
+
+    @Override
+    public void onClick(View v) {
+        if(mSpritzer.isPlaying()){
+            pause();
+        }else{
+            play();
+        }
+
     }
 }
