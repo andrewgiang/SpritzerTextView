@@ -31,21 +31,6 @@ public class SpritzerTextView extends TextView implements View.OnClickListener {
         init();
     }
 
-    public void setWpm(int wpm){
-        mSpritzer.setWpm(wpm);
-    }
-    /**
-     * Set a custom spritzer
-     * @param spritzer
-     */
-    public void setSpritzer(Spritzer spritzer){
-        mSpritzer = spritzer;
-        mSpritzer.swapTextView(this);
-    }
-
-    /**
-     * Initialize a basic spritzer
-     */
     private void init() {
         mSpritzer = new Spritzer(this);
         mPaintGuides = new Paint(Paint.ANTI_ALIAS_FLAG);
@@ -58,9 +43,6 @@ public class SpritzerTextView extends TextView implements View.OnClickListener {
         }
 
     }
-
-
-
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
@@ -82,6 +64,25 @@ public class SpritzerTextView extends TextView implements View.OnClickListener {
     }
 
     /**
+     * This determines the words per minute the sprizter will read at
+     *
+     * @param wpm the number of words per minute
+     */
+    public void setWpm(int wpm){
+        mSpritzer.setWpm(wpm);
+    }
+
+
+    /**
+     * Set a custom spritzer
+     * @param spritzer
+     */
+    public void setSpritzer(Spritzer spritzer){
+        mSpritzer = spritzer;
+        mSpritzer.swapTextView(this);
+    }
+
+    /**
      * Pass input text to spritzer object
      * @param input
      */
@@ -98,6 +99,8 @@ public class SpritzerTextView extends TextView implements View.OnClickListener {
     public void pause(){
         mSpritzer.pause();
     }
+
+
     public Spritzer getSpritzer(){
         return mSpritzer;
     }
