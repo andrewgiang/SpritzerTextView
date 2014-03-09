@@ -20,15 +20,26 @@ dependencies {
 ```
 
 Add to your layout
+
 ```
+ <!-- Add xmlns:app="http://schemas.android.com/apk/res-auto" to your root layout to use clickControls attribute
+ 
+  Note: clickControls is optional and defaults to false, 
+  if set to true the TextView will act a simple play/pause button when clicked. -->
+
     <com.andrewgiang.textspritzer.lib.SpritzerTextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
+        app:clickControls="true"
         />
 ```
 
+Note:  
+
+
 Set Spritz Text and play or pause
+
+
 ```
  final SpritzerTextView view = (SpritzerTextView) findViewById(R.id.spritzTV);
  view.setSpritzText("add the spritz text here");
