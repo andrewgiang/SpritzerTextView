@@ -13,9 +13,8 @@
         android:id="@+id/spritzTV"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
-        android:padding="10dp"
         android:typeface="monospace"
-        android:textSize="30sp"
+        android:textSize="28sp"
         app:clickControls="true"
         />
 
@@ -35,6 +34,16 @@
         android:id="@+id/button2"
         android:layout_alignParentBottom="true"
         android:layout_alignRight="@+id/spritzTV" />
+
+    <SeekBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/seekBar"
+        android:layout_below="@+id/spritzTV"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 
 
 </RelativeLayout>
