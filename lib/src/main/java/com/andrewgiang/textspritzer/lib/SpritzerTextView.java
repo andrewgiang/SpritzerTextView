@@ -5,6 +5,7 @@ import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 import android.widget.TextView;
@@ -14,6 +15,7 @@ import android.widget.TextView;
  */
 public class SpritzerTextView extends TextView implements View.OnClickListener {
 
+    public static final String TAG = SpritzerTextView.class.getName();
     public static final int PAINT_WIDTH_DP = 4;          // thickness of spritz guide bars in dp
     // For optimal drawing should be an even number
     private Spritzer mSpritzer;
@@ -21,6 +23,7 @@ public class SpritzerTextView extends TextView implements View.OnClickListener {
     private float mPaintWidthPx;
     private String mTestString;
     private boolean mDefaultClickListener = false;
+    private int mAdditonalPadding;
 
     public SpritzerTextView(Context context) {
         super(context);
@@ -37,6 +40,7 @@ public class SpritzerTextView extends TextView implements View.OnClickListener {
     }
 
     private void init(AttributeSet attrs) {
+        setAdditionalPadding(attrs);
         final TypedArray a = getContext().getTheme().obtainStyledAttributes(attrs, R.styleable.SpritzerTextView, 0, 0);
         try {
             mDefaultClickListener = a.getBoolean(R.styleable.SpritzerTextView_clickControls, false);
@@ -47,7 +51,26 @@ public class SpritzerTextView extends TextView implements View.OnClickListener {
 
     }
 
+    private void setAdditionalPadding(AttributeSet attrs) {
+        //check padding attributes
+        int [] attributes = new int [] {android.R.attr.padding, android.R.attr.paddingTop,
+                android.R.attr.paddingBottom};
+
+        final TypedArray paddingArray = getContext().obtainStyledAttributes(attrs, attributes);
+        try {
+            final int padding = paddingArray.getDimensionPixelOffset(0, 0);
+            final int paddingTop = paddingArray.getDimensionPixelOffset(1, 0);
+            final int paddingBottom = paddingArray.getDimensionPixelOffset(2, 0);
+            mAdditonalPadding = Math.max(padding, Math.max(paddingTop, paddingBottom));
+            Log.w(TAG, "Additional Padding " + mAdditonalPadding);
+        }finally {
+            paddingArray.recycle();
+        }
+    }
+
     private void init() {
+        int pivotPadding = getPivotPadding();
+        setPadding(getPaddingLeft(), pivotPadding ,getPaddingRight(), pivotPadding);
         mPaintWidthPx = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, PAINT_WIDTH_DP, getResources().getDisplayMetrics());
         mSpritzer = new Spritzer(this);
         mPaintGuides = new Paint(Paint.ANTI_ALIAS_FLAG);
@@ -83,11 +106,20 @@ public class SpritzerTextView extends TextView implements View.OnClickListener {
         // Measurements for pivot indicator
         final float textSize = getTextSize();
         float centerX = calculatePivotXOffset() + getPaddingLeft();
-        final int pivotIndicatorLength = 15;
+        final int pivotIndicatorLength = getPivotIndicatorLength();
 
         // Paint the pivot indicator
-        canvas.drawLine(centerX, topY + (mPaintWidthPx / 2), centerX, topY + (mPaintWidthPx / 2) + (pivotIndicatorLength * 2), mPaintGuides); //line through center of circle
-        canvas.drawLine(centerX, bottomY - (mPaintWidthPx / 2), centerX, bottomY - (mPaintWidthPx / 2) - (pivotIndicatorLength * 2), mPaintGuides);
+        canvas.drawLine(centerX, topY + (mPaintWidthPx / 2), centerX, topY + (mPaintWidthPx / 2) + pivotIndicatorLength, mPaintGuides); //line through center of circle
+        canvas.drawLine(centerX, bottomY - (mPaintWidthPx / 2), centerX, bottomY - (mPaintWidthPx / 2) - pivotIndicatorLength , mPaintGuides);
+    }
+
+    private int getPivotPadding() {
+        return getPivotIndicatorLength() * 2 + mAdditonalPadding;
+    }
+
+    private int getPivotIndicatorLength() {
+
+        return getPaint().getFontMetricsInt().bottom;
     }
 
     private float calculatePivotXOffset() {

@@ -13,7 +13,6 @@
         android:id="@+id/spritzTV"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
-        android:padding="10dp"
         android:typeface="monospace"
         android:textSize="30sp"
         app:clickControls="true"
