@@ -15,7 +15,7 @@ The library is released to maven central as an aar so all your need to do is add
 
 ```
 dependencies {  
-    compile 'com.andrewgiang.spritzertextview:library:0.1.1+'
+    compile 'com.andrewgiang.spritzertextview:library:0.2.0+'
 }
 ```
 
