@@ -5,7 +5,7 @@ A simplified TextView wrapper that uses the Spritzer from  [OpenSpritz-Android](
 
 Note: This library has nothing to do with SpritzInc. 
 
-![SpritzerTextView example](http://i.imgur.com/2fXxNcm.gif)
+![SpritzerTextView example](http://i.imgur.com/mkeViYY.gif)
 
 Usage
 ------------
@@ -19,17 +19,19 @@ dependencies {
 }
 ```
 
-Add to your layout
+Add to your layout, be sure to use a monospaced font
 
 ```
- <!-- Add xmlns:app="http://schemas.android.com/apk/res-auto" to your root layout to use clickControls attribute
- 
-  Note: clickControls is optional and defaults to false, 
+ <!-- Add xmlns:app="http://schemas.android.com/apk/res-auto" 
+      to your root layout to use clickControls attribute -->
+      
+<!-- Note: clickControls is optional and defaults to false, 
   if set to true the TextView will act a simple play/pause button when clicked. -->
 
     <com.andrewgiang.textspritzer.lib.SpritzerTextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:typeface="monospace"
         app:clickControls="true"
         />
 ```
