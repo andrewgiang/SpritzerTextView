@@ -113,6 +113,14 @@ public class SpritzerTextView extends TextView implements View.OnClickListener {
         return getPivotIndicatorLength() * 2 + mAdditonalPadding;
     }
 
+    @Override
+    public void setTextSize(float size) {
+        super.setTextSize(size);
+        int pivotPadding = getPivotPadding();
+        setPadding(getPaddingLeft(), pivotPadding ,getPaddingRight(), pivotPadding);
+
+    }
+
     private int getPivotIndicatorLength() {
 
         return getPaint().getFontMetricsInt().bottom;
