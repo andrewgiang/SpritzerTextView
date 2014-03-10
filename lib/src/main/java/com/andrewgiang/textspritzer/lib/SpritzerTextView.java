@@ -5,6 +5,7 @@ import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.util.AttributeSet;
+import android.util.TypedValue;
 import android.view.View;
 import android.widget.TextView;
 
@@ -13,9 +14,12 @@ import android.widget.TextView;
  */
 public class SpritzerTextView extends TextView implements View.OnClickListener {
 
-    private  Spritzer mSpritzer;
+    public static final int PAINT_WIDTH_DP = 4;          // thickness of spritz guide bars in dp
+    // For optimal drawing should be an even number
+    private Spritzer mSpritzer;
     private Paint mPaintGuides;
-    private Paint mPaintPivotIndicator;
+    private float mPaintWidthPx;
+    private String mTestString;
     private boolean mDefaultClickListener = false;
 
     public SpritzerTextView(Context context) {
@@ -36,7 +40,7 @@ public class SpritzerTextView extends TextView implements View.OnClickListener {
         final TypedArray a = getContext().getTheme().obtainStyledAttributes(attrs, R.styleable.SpritzerTextView, 0, 0);
         try {
             mDefaultClickListener = a.getBoolean(R.styleable.SpritzerTextView_clickControls, false);
-        }finally {
+        } finally {
             a.recycle();
         }
         init();
@@ -44,35 +48,58 @@ public class SpritzerTextView extends TextView implements View.OnClickListener {
     }
 
     private void init() {
+        mPaintWidthPx = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, PAINT_WIDTH_DP, getResources().getDisplayMetrics());
         mSpritzer = new Spritzer(this);
         mPaintGuides = new Paint(Paint.ANTI_ALIAS_FLAG);
         mPaintGuides.setColor(getCurrentTextColor());
-        mPaintPivotIndicator = new Paint(Paint.ANTI_ALIAS_FLAG);
-        mPaintPivotIndicator.setStyle(Paint.Style.STROKE);
-        mPaintPivotIndicator.setStrokeWidth(3);
-        if(mDefaultClickListener){
+        mPaintGuides.setStrokeWidth(mPaintWidthPx);
+        mPaintGuides.setAlpha(128);
+        if (mDefaultClickListener) {
             this.setOnClickListener(this);
         }
 
     }
+
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        //Measurements for top & bottom guide line
-        int beginTopX = 0, beginTopY = 0, endTopX = getMeasuredWidth(), endTopY = 0;
-        int beginBottomX = 0, beginBottomY = getMeasuredHeight(), endBottomX = getMeasuredWidth(), endBottomY = getMeasuredHeight();
-        //Paint the top guide and bottom guide bars
-        canvas.drawLine(beginTopX, beginTopY, endTopX, endTopY ,mPaintGuides);
-        canvas.drawLine(beginBottomX, beginBottomY, endBottomX, endBottomY, mPaintGuides);
 
-        //Measurements for pivot indicator
+        // Pad the Spritz chrome so the
+        // pivot circle doesn't clip
+        int chromePadding = 15;
+
+        // Measurements for top & bottom guide line
+        int beginTopX = 0;
+        int endTopX = getMeasuredWidth();
+        int topY = chromePadding;
+
+        int beginBottomX = 0;
+        int endBottomX = getMeasuredWidth();
+        int bottomY = getMeasuredHeight() - chromePadding;
+        // Paint the top guide and bottom guide bars
+        canvas.drawLine(beginTopX, topY, endTopX, topY, mPaintGuides);
+        canvas.drawLine(beginBottomX, bottomY, endBottomX, bottomY, mPaintGuides);
+
+        // Measurements for pivot indicator
         final float textSize = getTextSize();
-        final float centerX = textSize * 2 + getPaddingLeft();
-        final float centerY = 0;
-        final int radius = 10;
-        //Paint the pivot indicator
-        canvas.drawCircle(centerX, centerY, radius, mPaintPivotIndicator); // Circle for pivot
-        canvas.drawLine(centerX, centerY, centerX, radius * 2, mPaintPivotIndicator); //line through center of circle
+        float centerX = calculatePivotXOffset() + getPaddingLeft();
+        final int pivotIndicatorLength = 15;
+
+        // Paint the pivot indicator
+        canvas.drawLine(centerX, topY + (mPaintWidthPx / 2), centerX, topY + (mPaintWidthPx / 2) + (pivotIndicatorLength * 2), mPaintGuides); //line through center of circle
+        canvas.drawLine(centerX, bottomY - (mPaintWidthPx / 2), centerX, bottomY - (mPaintWidthPx / 2) - (pivotIndicatorLength * 2), mPaintGuides);
+    }
+
+    private float calculatePivotXOffset() {
+        // Craft a test String of precise length
+        // to reach pivot character
+        if (mTestString == null) {
+            // Spritzer requires monospace font so character is irrelevant
+            mTestString = "a";
+        }
+        // Measure the rendered distance of CHARS_LEFT_OF_PIVOT chars
+        // plus half the pivot character
+        return (getPaint().measureText(mTestString, 0, 1) * (Spritzer.CHARS_LEFT_OF_PIVOT + .50f));
     }
 
     /**
@@ -80,48 +107,51 @@ public class SpritzerTextView extends TextView implements View.OnClickListener {
      *
      * @param wpm the number of words per minute
      */
-    public void setWpm(int wpm){
+    public void setWpm(int wpm) {
         mSpritzer.setWpm(wpm);
     }
 
 
     /**
      * Set a custom spritzer
+     *
      * @param spritzer
      */
-    public void setSpritzer(Spritzer spritzer){
+    public void setSpritzer(Spritzer spritzer) {
         mSpritzer = spritzer;
         mSpritzer.swapTextView(this);
     }
 
     /**
      * Pass input text to spritzer object
+     *
      * @param input
      */
-    public void setSpritzText(String input){
+    public void setSpritzText(String input) {
         mSpritzer.setText(input);
     }
 
     /**
      * Will play the spritz text that was set in setSpritzText
      */
-    public void play(){
+    public void play() {
         mSpritzer.start();
     }
-    public void pause(){
+
+    public void pause() {
         mSpritzer.pause();
     }
 
 
-    public Spritzer getSpritzer(){
+    public Spritzer getSpritzer() {
         return mSpritzer;
     }
 
     @Override
     public void onClick(View v) {
-        if(mSpritzer.isPlaying()){
+        if (mSpritzer.isPlaying()) {
             pause();
-        }else{
+        } else {
             play();
         }
 
