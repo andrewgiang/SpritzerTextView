@@ -5,6 +5,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.SeekBar;
 
 import com.andrewgiang.textspritzer.lib.SpritzerTextView;
 
@@ -15,6 +16,24 @@ public class MainActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         final SpritzerTextView view = (SpritzerTextView) findViewById(R.id.spritzTV);
+        final SeekBar bar = (SeekBar)findViewById(R.id.seekBar);
+        bar.setProgress((int)view.getTextSize());
+        bar.setOnSeekBarChangeListener( new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                view.setTextSize(seekBar.getProgress());
+            }
+        });
         view.setSpritzText("OpenSpritz has nothing to do with Spritz Incorporated. This is an open source, community created project, made with love because Spritz is such an awesome technique for reading with.");
 
 
