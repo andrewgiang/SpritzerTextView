@@ -9,7 +9,7 @@ before_install:
     - export TERM=dumb # to get clean gradle output
     # Create and start emulator
     - android list targets # for debugging
-    - echo no | android create avd --force -n test -t 1
+    - echo no | android create avd --force -n test -t android-19 --abi armeabi-v7a
     - emulator -avd test -no-skin -no-audio -no-window &
     - wait_for_emulator
 script:
