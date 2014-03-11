@@ -138,8 +138,8 @@ public class Spritzer {
                 Log.i(TAG, "Splitting long word " + word + " into " + word.substring(0, splitIndex) + " and " + word.substring(splitIndex));
             }
             firstSegment = word.substring(0, splitIndex);
-            // A word split is always indicated with a hyphen
-            if (!firstSegment.contains("-")) {
+            // A word split is always indicated with a hyphen unless ending in a period
+            if (!firstSegment.contains("-") && !firstSegment.endsWith(".")) {
                 firstSegment = firstSegment + "-";
             }
             mWordQueue.addFirst(word.substring(splitIndex));

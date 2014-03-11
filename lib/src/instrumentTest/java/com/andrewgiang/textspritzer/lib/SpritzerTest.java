@@ -14,7 +14,8 @@ public class SpritzerTest extends AndroidTestCase {
      */
     public static String[] longWordTests = {
             "abcdefghijklmnopqrstuv:abcdefghijklm-:nopqrstuv",
-            "hyperactive-monkey:hyperactive-:monkey"
+            "hyperactive-monkey:hyperactive-:monkey",
+            "abcdefghijk.lmnopqrstuv:abcdefghijk.:lmnopqrstuv"
     };
     protected Spritzer spritzer;
 
