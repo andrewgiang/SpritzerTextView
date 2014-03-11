@@ -8,27 +8,30 @@ import android.widget.TextView;
  */
 public class SpritzerTest extends AndroidTestCase {
 
+
+    public static final String SEPARATOR = ":";
+
     /**
      * Test cases are in this format:
-     *    "LongWordToTest:"+
-     *     "ExpectedSplit:"+
-     *     "WordAddedToQueue",
+     *    "WordToTest"+ SEPARATOR +
+     *     "FirstHalfWord"+ SEPARATOR +
+     *     "SecondHalfWord",
      */
     public static String[] splitWordTests = {
-            "abcdefghijklmnopqrstuv:" +
-                    "abcdefghijk-:" +
+            "abcdefghijklmnopqrstuv" + SEPARATOR +
+                    "abcdefghijk-" + SEPARATOR +
                     "lmnopqrstuv", //Long word test 22 characters
 
-            "hyperactive-monkey:" +
-                    "hyperactive-:" +
+            "hyperactive-monkey" + SEPARATOR +
+                    "hyperactive-" + SEPARATOR +
                     "monkey", //Hyphen long word test
 
-            "abcdefghijk.lmnopqrstuv:" +
-                    "abcdefghijk.:" +
+            "abcdefghijk.lmnopqrstuv" + SEPARATOR +
+                    "abcdefghijk." + SEPARATOR +
                     "lmnopqrstuv", //Period long word test
 
-            "abcdefghijklmnopqrstuvwxyz0:" +
-                    "abcdefghijklm-:" +
+            "abcdefghijklmnopqrstuvwxyz0" + SEPARATOR +
+                    "abcdefghijklm-" + SEPARATOR +
                     "nopqrstuvwxyz0" //27 characters should use MAX_CHARS(13) as split index
     };
     protected Spritzer spritzer;
