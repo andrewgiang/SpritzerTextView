@@ -11,6 +11,8 @@ before_install:
     - android list targets # for debugging
     - echo no | android create avd --force -n test -t android-19 --abi armeabi-v7a
     - emulator -avd test -no-skin -no-audio -no-window &
+
+before_script:
     - wait_for_emulator
 script:
     - ./gradlew connectedInstrumentTest
