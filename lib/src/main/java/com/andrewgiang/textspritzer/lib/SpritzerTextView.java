@@ -176,6 +176,10 @@ public class SpritzerTextView extends TextView implements View.OnClickListener {
     public void pause() {
         mSpritzer.pause();
     }
+    public int getWpm(){
+        return mSpritzer.getWpm();
+    }
+
 
 
     public Spritzer getSpritzer() {

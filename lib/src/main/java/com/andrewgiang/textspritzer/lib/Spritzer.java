@@ -54,6 +54,10 @@ public class Spritzer {
                 .split(" ");                    // split on spaces
     }
 
+    public int getWpm() {
+        return mWPM;
+    }
+
     protected void init() {
         mWordQueue = new ArrayDeque<String>();
         mWPM = 500;
