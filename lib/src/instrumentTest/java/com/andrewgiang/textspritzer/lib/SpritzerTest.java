@@ -12,10 +12,11 @@ public class SpritzerTest extends AndroidTestCase {
      * Test cases are in this format:
      * LongWordToTest:ExpectedSplit:WordAddedToQueue
      */
-    public static String[] longWordTests = {
-            "abcdefghijklmnopqrstuv:abcdefghijklm-:nopqrstuv",
-            "hyperactive-monkey:hyperactive-:monkey",
-            "abcdefghijk.lmnopqrstuv:abcdefghijk.:lmnopqrstuv"
+    public static String[] splitWordTests = {
+            "abcdefghijklmnopqrstuv:abcdefghijk-:lmnopqrstuv", //Long word test 22 characters
+            "hyperactive-monkey:hyperactive-:monkey", //Hyphen long word test
+            "abcdefghijk.lmnopqrstuv:abcdefghijk.:lmnopqrstuv", //Period long word test
+            "abcdefghijklmnopqrstuvwxyz0:abcdefghijklm-:nopqrstuvwxyz0" //27 characters should use 13 use MAX_CHARS as split index
     };
     protected Spritzer spritzer;
 
@@ -26,10 +27,15 @@ public class SpritzerTest extends AndroidTestCase {
     }
 
 
-    public void testSplitLongWords(){
+    public void testSplitWordList() {
+        for (String tests : splitWordTests) {
+            final String[] split = tests.split(":");
+            assertEquals(3, split.length);
+        }
+    }
 
-
-        for(String tests: longWordTests){
+    public void testSplitWords() {
+        for (String tests : splitWordTests) {
             final String[] arry = tests.split(":");
             String longword = arry[0];
             String expectedSplit = arry[1];

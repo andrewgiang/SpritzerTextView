@@ -131,8 +131,10 @@ public class Spritzer {
                 splitIndex = word.indexOf("-") + 1;
             } else if (word.contains(".")) {
                 splitIndex = word.indexOf(".") + 1;
-            } else {
+            } else if (word.length() > MAX_WORD_LENGTH * 2) {
                 splitIndex = MAX_WORD_LENGTH;
+            } else {
+                splitIndex = word.length() / 2;
             }
             if (VERBOSE) {
                 Log.i(TAG, "Splitting long word " + word + " into " + word.substring(0, splitIndex) + " and " + word.substring(splitIndex));
