@@ -39,7 +39,9 @@ public class MainActivity extends ActionBarActivity {
             mSeekBarWpm.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
                 @Override
                 public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                    mSpritzerTextView.setWpm(progress);
+                    if (progress > 0) {
+                        mSpritzerTextView.setWpm(progress);
+                    }
                 }
 
                 @Override
@@ -48,7 +50,6 @@ public class MainActivity extends ActionBarActivity {
 
                 @Override
                 public void onStopTrackingTouch(SeekBar seekBar) {
-                    mSpritzerTextView.setWpm(seekBar.getProgress());
                 }
             });
             mSeekBarTextSize.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
