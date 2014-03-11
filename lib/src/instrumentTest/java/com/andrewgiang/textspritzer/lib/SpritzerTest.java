@@ -10,13 +10,26 @@ public class SpritzerTest extends AndroidTestCase {
 
     /**
      * Test cases are in this format:
-     * LongWordToTest:ExpectedSplit:WordAddedToQueue
+     *    "LongWordToTest:"+
+     *     "ExpectedSplit:"+
+     *     "WordAddedToQueue",
      */
     public static String[] splitWordTests = {
-            "abcdefghijklmnopqrstuv:abcdefghijk-:lmnopqrstuv", //Long word test 22 characters
-            "hyperactive-monkey:hyperactive-:monkey", //Hyphen long word test
-            "abcdefghijk.lmnopqrstuv:abcdefghijk.:lmnopqrstuv", //Period long word test
-            "abcdefghijklmnopqrstuvwxyz0:abcdefghijklm-:nopqrstuvwxyz0" //27 characters should use 13 use MAX_CHARS as split index
+            "abcdefghijklmnopqrstuv:" +
+                    "abcdefghijk-:" +
+                    "lmnopqrstuv", //Long word test 22 characters
+
+            "hyperactive-monkey:" +
+                    "hyperactive-:" +
+                    "monkey", //Hyphen long word test
+
+            "abcdefghijk.lmnopqrstuv:" +
+                    "abcdefghijk.:" +
+                    "lmnopqrstuv", //Period long word test
+
+            "abcdefghijklmnopqrstuvwxyz0:" +
+                    "abcdefghijklm-:" +
+                    "nopqrstuvwxyz0" //27 characters should use MAX_CHARS(13) as split index
     };
     protected Spritzer spritzer;
 
