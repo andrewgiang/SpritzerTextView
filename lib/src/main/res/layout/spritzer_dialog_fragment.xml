@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.andrewgiang.textspritzer.lib.SpritzerTextView
+        android:id="@+id/spriter_text_view"
+        android:layout_width="300dp"
+        android:layout_height="match_parent"
+        app:clickControls="true"
+        android:textSize="28sp" />
+
+</LinearLayout>
