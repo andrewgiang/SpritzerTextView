@@ -12,29 +12,53 @@ public class SpritzerTest extends AndroidTestCase {
     public static final String SEPARATOR = ":";
 
     /**
+     * Note: MAX_WORD_LENGTH  = 13
+     *
      * Test cases are in this format:
      *    "WordToTest"+ SEPARATOR +
      *     "FirstHalfWord"+ SEPARATOR +
      *     "SecondHalfWord",
      */
     public static String[] splitWordTests = {
+
+
+            /**
+             * Test a long word > MAX_WORD_LENGTH && word < MAX_WORD_LENGTH * 2
+             *
+             * Split index should be the word.length/2
+             */
             "abcdefghijklmnopqrstuv" + SEPARATOR +
                     "abcdefghijk-" + SEPARATOR +
-                    "lmnopqrstuv", //Long word test 22 characters
+                    "lmnopqrstuv",
 
+            /**
+             * Test a word > MAX_WORD_LENGTH with a hyphen
+             *
+             * Split index should be after the hypen
+             */
             "hyperactive-monkey" + SEPARATOR +
                     "hyperactive-" + SEPARATOR +
-                    "monkey", //Hyphen long word test
+                    "monkey",
 
+            /**
+             * Test a word with length > 13 and has a period
+             *
+             * Split index should be after the period
+             */
             "abcdefghijk.lmnopqrstuv" + SEPARATOR +
                     "abcdefghijk." + SEPARATOR +
-                    "lmnopqrstuv", //Period long word test
+                    "lmnopqrstuv",
 
+            /**
+             * Test a word longer than 26 (MAX_CHARS_LENGTH *2)
+             *
+             * Split index should be MAX_WORD_LENGTH - 1 so we can add a hypen to make it 13
+             */
             "abcdefghijklmnopqrstuvwxyz0" + SEPARATOR +
-                    "abcdefghijklm-" + SEPARATOR +
-                    "nopqrstuvwxyz0" //27 characters should use MAX_CHARS(13) as split index
+                    "abcdefghijkl-" + SEPARATOR +
+                    "mnopqrstuvwxyz0"
     };
-    protected Spritzer spritzer;
+    private Spritzer spritzer;
 
     @Override
     protected void setUp() throws Exception {
