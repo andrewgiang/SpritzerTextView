@@ -11,6 +11,7 @@
         android:layout_width="300dp"
         android:layout_height="match_parent"
         app:clickControls="true"
+        android:typeface="monospace"
         android:textSize="28sp" />
 
 </LinearLayout>
