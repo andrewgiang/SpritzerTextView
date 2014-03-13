@@ -19,7 +19,7 @@ android {
 }
 
 dependencies {
-    //compile 'com.andrewgiang.spritzertextview:library:0.0.1'
+    //compile 'com.andrewgiang.spritzertextview:library:0.2.0+'
     compile project(":lib")
     compile 'com.android.support:appcompat-v7:+'
     compile fileTree(dir: 'libs', include: ['*.jar'])
