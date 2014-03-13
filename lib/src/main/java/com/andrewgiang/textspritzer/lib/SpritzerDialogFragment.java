@@ -33,7 +33,7 @@ public class SpritzerDialogFragment extends DialogFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        final View root = inflater.inflate(R.layout.spritzer_dialog_fragment, container);
+        final View root = inflater.inflate(R.layout.spritzer_dialog_fragment, container, false);
         mSpritzerTextView = (SpritzerTextView) root.findViewById(R.id.spriter_text_view);
 
         mSpritzerTextView.setSpritzText(getArguments().getString(ARG_SPRITZER_TEXT));
