@@ -8,6 +8,7 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 /**
@@ -32,11 +33,13 @@ public class SpritzerTextView extends TextView implements View.OnClickListener {
     private String mTestString;
     private boolean mDefaultClickListener = false;
     private int mAdditonalPadding;
+    private ProgressBar mProgressBar;
 
     public SpritzerTextView(Context context) {
         super(context);
         init();
     }
+
     public SpritzerTextView(Context context, AttributeSet attrs) {
         super(context, attrs);
         init(attrs);
@@ -61,7 +64,7 @@ public class SpritzerTextView extends TextView implements View.OnClickListener {
 
     private void setAdditionalPadding(AttributeSet attrs) {
         //check padding attributes
-        int [] attributes = new int [] {android.R.attr.padding, android.R.attr.paddingTop,
+        int[] attributes = new int[]{android.R.attr.padding, android.R.attr.paddingTop,
                 android.R.attr.paddingBottom};
 
         final TypedArray paddingArray = getContext().obtainStyledAttributes(attrs, attributes);
@@ -71,14 +74,14 @@ public class SpritzerTextView extends TextView implements View.OnClickListener {
             final int paddingBottom = paddingArray.getDimensionPixelOffset(2, 0);
             mAdditonalPadding = Math.max(padding, Math.max(paddingTop, paddingBottom));
             Log.w(TAG, "Additional Padding " + mAdditonalPadding);
-        }finally {
+        } finally {
             paddingArray.recycle();
         }
     }
 
     private void init() {
         int pivotPadding = getPivotPadding();
-        setPadding(getPaddingLeft(), pivotPadding ,getPaddingRight(), pivotPadding);
+        setPadding(getPaddingLeft(), pivotPadding, getPaddingRight(), pivotPadding);
         mPaintWidthPx = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, PAINT_WIDTH_DP, getResources().getDisplayMetrics());
         mSpritzer = new Spritzer(this);
         mPaintGuides = new Paint(Paint.ANTI_ALIAS_FLAG);
@@ -113,7 +116,7 @@ public class SpritzerTextView extends TextView implements View.OnClickListener {
 
         // Paint the pivot indicator
         canvas.drawLine(centerX, topY + (mPaintWidthPx / 2), centerX, topY + (mPaintWidthPx / 2) + pivotIndicatorLength, mPaintGuides); //line through center of circle
-        canvas.drawLine(centerX, bottomY - (mPaintWidthPx / 2), centerX, bottomY - (mPaintWidthPx / 2) - pivotIndicatorLength , mPaintGuides);
+        canvas.drawLine(centerX, bottomY - (mPaintWidthPx / 2), centerX, bottomY - (mPaintWidthPx / 2) - pivotIndicatorLength, mPaintGuides);
     }
 
     private int getPivotPadding() {
@@ -124,7 +127,7 @@ public class SpritzerTextView extends TextView implements View.OnClickListener {
     public void setTextSize(float size) {
         super.setTextSize(size);
         int pivotPadding = getPivotPadding();
-        setPadding(getPaddingLeft(), pivotPadding ,getPaddingRight(), pivotPadding);
+        setPadding(getPaddingLeft(), pivotPadding, getPaddingRight(), pivotPadding);
 
     }
 
@@ -188,11 +191,15 @@ public class SpritzerTextView extends TextView implements View.OnClickListener {
     public void pause() {
         mSpritzer.pause();
     }
-    public int getWpm(){
+
+    public int getWpm() {
         return mSpritzer.getWpm();
     }
 
+    public void attachProgressBar(ProgressBar bar) {
+        mSpritzer.attachProgressBar(bar);
 
+    }
 
     public Spritzer getSpritzer() {
         return mSpritzer;
