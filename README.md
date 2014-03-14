@@ -1,55 +1,23 @@
-SpritzerTextView   
+SpritzerTextView
 ============
-[![Build Status](https://travis-ci.org/andrewgiang/SpritzerTextView.png?branch=master)](https://travis-ci.org/andrewgiang/SpritzerTextView)    
-A simplified TextView wrapper that uses the Spritzer from  [OpenSpritz-Android](https://github.com/OnlyInAmerica/OpenSpritz-Android) to "spritz" text. 
 
-Note: This library has nothing to do with SpritzInc. 
+[![Build Status](https://travis-ci.org/andrewgiang/SpritzerTextView.png?branch=master)](https://travis-ci.org/andrewgiang/SpritzerTextView)
+A simplified TextView wrapper that uses the Spritzer from  [OpenSpritz-Android](https://github.com/OnlyInAmerica/OpenSpritz-Android) to "spritz" text.
+
+Note: This library has nothing to do with SpritzInc.
+######This library is a preview, api may change between versions.
 
 ![SpritzerTextView example](http://i.imgur.com/mkeViYY.gif)
 
-Usage
+
+
+Quick Start
 ------------
-######This library is a preview, api may change between versions.
-
-The library is released to maven central as an aar so all your need to do is add the following dependency to your build.gradle
-
-```
-dependencies {  
-    compile 'com.andrewgiang.spritzertextview:library:0.2.0+'
-}
-```
-
-Add to your layout, be sure to use a monospaced font
-
-```
- <!-- Add xmlns:app="http://schemas.android.com/apk/res-auto" 
-      to your root layout to use clickControls attribute -->
-      
-<!-- Note: clickControls is optional and defaults to false, 
-  if set to true the TextView will act a simple play/pause button when clicked. -->
-
-    <com.andrewgiang.textspritzer.lib.SpritzerTextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:typeface="monospace"
-        app:clickControls="true"
-        />
-```
-
-Set Spritz Text and play or pause
-
-
-```
- final SpritzerTextView view = (SpritzerTextView) findViewById(R.id.spritzTV);
- view.setSpritzText("add the spritz text here");
- view.play(); // Play the text set in method setSpritzText()
- view.pause(); // Pauses the spritzer can be resumed with the play() method
-```
-
+Please take a look at the [Quick Start Guide](https://github.com/andrewgiang/SpritzerTextView/blob/master/QUICKSTART.md)
 
 Contributing
 ------------
-Please feel free to fork and contribute in any way. 
+Please feel free to fork and contribute in any way.
 
 
 License
