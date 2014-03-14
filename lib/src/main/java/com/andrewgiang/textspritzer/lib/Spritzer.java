@@ -157,6 +157,7 @@ public class Spritzer {
             if (!firstSegment.contains("-") && !firstSegment.endsWith(".")) {
                 firstSegment = firstSegment + "-";
             }
+            mCurWordIdx--; //have to account for the added word in the queue
             mWordQueue.addFirst(word.substring(splitIndex));
             word = firstSegment;
 
