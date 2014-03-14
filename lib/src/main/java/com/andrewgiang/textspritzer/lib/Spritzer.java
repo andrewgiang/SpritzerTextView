@@ -6,6 +6,7 @@ import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.TextAppearanceSpan;
 import android.util.Log;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import java.lang.ref.WeakReference;
@@ -36,6 +37,7 @@ public class Spritzer {
     protected boolean mSpritzThreadStarted;
 
     protected int mCurWordIdx;
+    private ProgressBar mProgressBar;
 
     public Spritzer(TextView target) {
         init();
@@ -104,9 +106,16 @@ public class Spritzer {
     }
 
     private void refillWordQueue() {
+        updateProgress();
         mCurWordIdx = 0;
         mWordQueue.clear();
         mWordQueue.addAll(Arrays.asList(mWordArray));
+    }
+
+    private void updateProgress() {
+        if (mProgressBar != null) {
+            mProgressBar.setProgress(mCurWordIdx);
+        }
     }
 
     protected void processNextWord() throws InterruptedException {
@@ -126,6 +135,7 @@ public class Spritzer {
                 }
             }
         }
+        updateProgress();
     }
 
     public String splitLongWord(String word) {
@@ -259,6 +269,11 @@ public class Spritzer {
 
     public ArrayDeque<String> getWordQueue() {
         return mWordQueue;
+    }
+
+    public void attachProgressBar(ProgressBar bar) {
+        mProgressBar = bar;
+        mProgressBar.setMax(mWordArray.length);
     }
 
     protected static class SpritzHandler extends Handler {
