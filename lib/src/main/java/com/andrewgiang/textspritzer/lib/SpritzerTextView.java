@@ -15,9 +15,17 @@ import android.widget.TextView;
  */
 public class SpritzerTextView extends TextView implements View.OnClickListener {
 
+    interface OnClickControlListener {
+        void onPause();
+
+        void onPlay();
+    }
+
     public static final String TAG = SpritzerTextView.class.getName();
     public static final int PAINT_WIDTH_DP = 4;          // thickness of spritz guide bars in dp
     // For optimal drawing should be an even number
+
+    private OnClickControlListener mClickControlListener;
     private Spritzer mSpritzer;
     private Paint mPaintGuides;
     private float mPaintWidthPx;
@@ -120,6 +128,10 @@ public class SpritzerTextView extends TextView implements View.OnClickListener {
 
     }
 
+    public void setOnClickControlListener(OnClickControlListener listener) {
+        mClickControlListener = listener;
+    }
+
     private int getPivotIndicatorLength() {
 
         return getPaint().getFontMetricsInt().bottom;
@@ -189,8 +201,14 @@ public class SpritzerTextView extends TextView implements View.OnClickListener {
     @Override
     public void onClick(View v) {
         if (mSpritzer.isPlaying()) {
+            if (mClickControlListener != null) {
+                mClickControlListener.onPause();
+            }
             pause();
         } else {
+            if (mClickControlListener != null) {
+                mClickControlListener.onPlay();
+            }
             play();
         }
 
