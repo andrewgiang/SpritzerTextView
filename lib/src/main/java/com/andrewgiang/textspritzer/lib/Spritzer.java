@@ -35,6 +35,7 @@ public class Spritzer {
     protected boolean mPlayingRequested;
     protected boolean mSpritzThreadStarted;
 
+    protected int mCurWordIdx;
 
     public Spritzer(TextView target) {
         init();
@@ -64,6 +65,7 @@ public class Spritzer {
         mPlaying = false;
         mPlayingRequested = false;
         mSpritzThreadStarted = false;
+        mCurWordIdx = 0;
     }
 
     public int getMinutesRemainingInQueue() {
@@ -102,6 +104,7 @@ public class Spritzer {
     }
 
     private void refillWordQueue() {
+        mCurWordIdx = 0;
         mWordQueue.clear();
         mWordQueue.addAll(Arrays.asList(mWordArray));
     }
@@ -109,6 +112,7 @@ public class Spritzer {
     protected void processNextWord() throws InterruptedException {
         if (!mWordQueue.isEmpty()) {
             String word = mWordQueue.remove();
+            mCurWordIdx += 1;
             // Split long words, at hyphen if present
             word = splitLongWord(word);
             mSpritzHandler.sendMessage(mSpritzHandler.obtainMessage(MSG_PRINT_WORD, word));
@@ -240,6 +244,14 @@ public class Spritzer {
             return 3;
         }
         return 1;
+    }
+
+    public String[] getWordArray() {
+        return mWordArray;
+    }
+
+    public ArrayDeque<String> getWordQueue() {
+        return mWordQueue;
     }
 
     protected static class SpritzHandler extends Handler {

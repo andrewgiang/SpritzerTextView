@@ -15,7 +15,7 @@ import android.widget.TextView;
  */
 public class SpritzerTextView extends TextView implements View.OnClickListener {
 
-    interface OnClickControlListener {
+    public static interface OnClickControlListener {
         void onPause();
 
         void onPlay();
@@ -212,5 +212,9 @@ public class SpritzerTextView extends TextView implements View.OnClickListener {
             play();
         }
 
+    }
+
+    public int getCurrentWordIndex() {
+        return mSpritzer.mCurWordIdx;
     }
 }
