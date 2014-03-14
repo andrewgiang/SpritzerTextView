@@ -2,7 +2,9 @@ package com.andrewgiang.textspritzer.app;
 
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.widget.ProgressBar;
 import android.widget.SeekBar;
+import android.widget.Toast;
 
 import com.andrewgiang.textspritzer.lib.SpritzerTextView;
 
@@ -12,26 +14,55 @@ public class MainActivity extends ActionBarActivity {
     private SpritzerTextView mSpritzerTextView;
     private SeekBar mSeekBarTextSize;
     private SeekBar mSeekBarWpm;
+    private ProgressBar mProgressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //Review the view and set text to be spritzed
         mSpritzerTextView = (SpritzerTextView) findViewById(R.id.spritzTV);
         mSpritzerTextView.setSpritzText("OpenSpritz has nothing to do with Spritz Incorporated. " +
                 "This is an open source, community created project, made with love because Spritz is " +
                 "such an awesome technique for reading with.");
-        mSeekBarTextSize = (SeekBar) findViewById(R.id.seekBarTextSize);
-        mSeekBarWpm = (SeekBar) findViewById(R.id.seekBarWpm);
+
+
+        //This attaches a progress bar that show exactly how far you are into your spritz
+        mProgressBar = (ProgressBar) findViewById(R.id.spritz_progress);
+        mSpritzerTextView.attachProgressBar(mProgressBar);
+
+
+        //Set how fast the spritzer should go
+        mSpritzerTextView.setWpm(500);
+
+        //Set Click Control listeners, these will be called when the user uses the click controls
+        mSpritzerTextView.setOnClickControlListener(new SpritzerTextView.OnClickControlListener() {
+            @Override
+            public void onPause() {
+                Toast.makeText(MainActivity.this, "Spritzer has been paused", Toast.LENGTH_SHORT).show();
+
+            }
+
+            @Override
+            public void onPlay() {
+                Toast.makeText(MainActivity.this, "Spritzer is playing", Toast.LENGTH_SHORT).show();
+
+            }
+        });
+
 
         setupSeekBars();
-        mSeekBarWpm.setProgress(mSpritzerTextView.getWpm());
-        mSeekBarTextSize.setProgress((int) mSpritzerTextView.getTextSize());
+
 
     }
 
+    /**
+     * This is just shows two seek bars to change wpm and text size
+     */
     private void setupSeekBars() {
+        mSeekBarTextSize = (SeekBar) findViewById(R.id.seekBarTextSize);
+        mSeekBarWpm = (SeekBar) findViewById(R.id.seekBarWpm);
         if (mSeekBarWpm != null && mSeekBarTextSize != null) {
             mSeekBarWpm.setMax(mSpritzerTextView.getWpm() * 2);
 
@@ -68,7 +99,11 @@ public class MainActivity extends ActionBarActivity {
 
                 }
             });
+
+            mSeekBarWpm.setProgress(mSpritzerTextView.getWpm());
+            mSeekBarTextSize.setProgress((int) mSpritzerTextView.getTextSize());
         }
+
     }
 
 

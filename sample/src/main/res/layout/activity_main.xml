@@ -14,8 +14,14 @@
         android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:typeface="monospace"
-        app:clickControls="true"
-        />
+        app:clickControls="true" />
+
+    <ProgressBar
+        android:id="@+id/spritz_progress"
+        android:layout_width="300dp"
+        android:layout_height="1dp"
+        android:layout_below="@id/spritzTV"
+        style="?android:attr/progressBarStyleHorizontal" />
 
     <LinearLayout
         android:orientation="vertical"
