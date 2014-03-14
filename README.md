@@ -13,7 +13,7 @@ Note: This library has nothing to do with SpritzInc.
 
 Quick Start
 ------------
-Please take a look at the [Quick Start Guide](https://github.com/andrewgiang/SpritzerTextView/blob/master/QUICKSTART.md)
+To use in your project please take a look at the [Quick Start Guide](https://github.com/andrewgiang/SpritzerTextView/blob/master/QUICKSTART.md).
 
 Contributing
 ------------
