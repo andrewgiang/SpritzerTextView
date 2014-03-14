@@ -47,7 +47,14 @@ public class Spritzer {
 
     public void setText(String input) {
         createWordArrayFromString(input);
+        setMaxProgress();
         refillWordQueue();
+    }
+
+    private void setMaxProgress() {
+        if (mWordArray != null && mProgressBar != null) {
+            mProgressBar.setMax(mWordArray.length);
+        }
     }
 
 
@@ -272,8 +279,9 @@ public class Spritzer {
     }
 
     public void attachProgressBar(ProgressBar bar) {
-        mProgressBar = bar;
-        mProgressBar.setMax(mWordArray.length);
+        if (bar != null) {
+            mProgressBar = bar;
+        }
     }
 
     protected static class SpritzHandler extends Handler {
