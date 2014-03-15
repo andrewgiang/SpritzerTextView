@@ -13,6 +13,7 @@ import java.lang.ref.WeakReference;
 import java.util.ArrayDeque;
 import java.util.Arrays;
 
+
 /**
  * Spritzer parses a String into a Queue
  * of words, and displays them one-by-one
@@ -27,8 +28,8 @@ public class Spritzer {
     protected static final int MAX_WORD_LENGTH = 13;
     protected static final int CHARS_LEFT_OF_PIVOT = 3;
 
-    protected String[] mWordArray;                  // The current list of words
-    protected ArrayDeque<String> mWordQueue;        // The queue being actively displayed
+    protected String[] mWordArray;                  // A parsed list of words parsed from {@link #setText(String input)}
+    protected ArrayDeque<String> mWordQueue;        // The queue of words from mWordArray yet to be displayed
 
     protected TextView mTarget;
     protected int mWPM;
@@ -61,28 +62,29 @@ public class Spritzer {
         mSpritzHandler = new SpritzHandler(this);
     }
 
+    /**
+     * Prepare to Spritz the given String input
+     * <p/>
+     * Call {@link #start()} to begin display
+     *
+     * @param input
+     */
     public void setText(String input) {
         createWordArrayFromString(input);
         setMaxProgress();
         refillWordQueue();
     }
-
     private void setMaxProgress() {
         if (mWordArray != null && mProgressBar != null) {
             mProgressBar.setMax(mWordArray.length);
         }
     }
-
-
     private void createWordArrayFromString(String input) {
         mWordArray = input
                 .replaceAll("/\\s+/g", " ")      // condense adjacent spaces
                 .split(" ");                    // split on spaces
     }
 
-    public int getWpm() {
-        return mWPM;
-    }
 
     protected void init() {
         mWordQueue = new ArrayDeque<String>();
@@ -100,10 +102,25 @@ public class Spritzer {
         return mWordQueue.size() / mWPM;
     }
 
+    public int getWpm() {
+        return mWPM;
+    }
+
+    /**
+     * Set the target Word Per Minute rate.
+     * Effective immediately.
+     * @param wpm
+     */
     public void setWpm(int wpm) {
         mWPM = wpm;
     }
 
+    /**
+     * Swap the target TextView. Call this if your
+     * host Activity is Destroyed and Re-Created.
+     * Effective immediately.
+     * @param target
+     */
     public void swapTextView(TextView target) {
         mTarget = target;
         if (!mPlaying) {
@@ -112,6 +129,10 @@ public class Spritzer {
 
     }
 
+    /**
+     * Start displaying the String input
+     * fed to {@link #setText(String)}
+     */
     public void start() {
         if (mPlaying || mWordArray == null) {
             return;
@@ -141,6 +162,20 @@ public class Spritzer {
         }
     }
 
+
+    /**
+     * Read the current head of mWordQueue and
+     * submit the appropriate Messages to mSpritzHandler.
+     *
+     * Split long words y submitting the first segment of a word
+     * and placing the second at the head of mWordQueue for processing
+     * during the next cycle.
+     *
+     * Must be called on a background thread, as this method uses
+     * {@link Thread#sleep(long)} to time pauses in display.
+     *
+     * @throws InterruptedException
+     */
     protected void processNextWord() throws InterruptedException {
         if (!mWordQueue.isEmpty()) {
             String word = mWordQueue.remove();
@@ -165,7 +200,15 @@ public class Spritzer {
         updateProgress();
     }
 
-    public String splitLongWord(String word) {
+    /**
+     * Split the given String if appropriate and
+     * add the tail of the split to the head of
+     * {@link #mWordQueue}
+     *
+     * @param word
+     * @return
+     */
+    protected String splitLongWord(String word) {
         if (word.length() > MAX_WORD_LENGTH) {
             int splitIndex = findSplitIndex(word);
             String firstSegment;
@@ -185,20 +228,47 @@ public class Spritzer {
         return word;
     }
 
-    private int findSplitIndex(String word) {
+    /**
+     * Determine the split index on a given String
+     * e.g If it exceeds MAX_WORD_LENGTH or contains a hyphen
+     *
+     * @param thisWord
+     * @return the index on which to split the given String
+     */
+    private int findSplitIndex(String thisWord){
         int splitIndex;
-        if (word.contains("-")) {
-            splitIndex = word.indexOf("-") + 1;
-        } else if (word.contains(".")) {
-            splitIndex = word.indexOf(".") + 1;
-        } else if (word.length() > MAX_WORD_LENGTH * 2) {
-            splitIndex = MAX_WORD_LENGTH -1;
+        // Split long words, at hyphen or dot if present.
+        if (thisWord.contains("-")) {
+            splitIndex = thisWord.indexOf("-") + 1;
+        } else if (thisWord.contains(".")) {
+            splitIndex = thisWord.indexOf(".") + 1;
+        } else if (thisWord.length() > MAX_WORD_LENGTH * 2) {
+            // if the word is floccinaucinihilipilifcation, for example.
+            splitIndex = MAX_WORD_LENGTH - 1;
+            // 12 characters plus a "-" == 13.
         } else {
-            splitIndex = word.length() / 2;
+            // otherwise we want to split near the middle.
+            splitIndex = Math.round(thisWord.length() / 2F);
         }
-        if (splitIndex > 13) return findSplitIndex(word.substring(0, splitIndex));
+        // in case we found a split character that was > MAX_WORD_LENGTH characters in.
+        if (splitIndex > MAX_WORD_LENGTH) {
+            // If we split the word at a splitting char like "-" or ".", we added one to the splitIndex
+            // in order to ensure the splitting char appears at the head of the split. Not accounting
+            // for this in the recursive call will cause a StackOverflowException
+            return findSplitIndex(thisWord.substring(0,
+                    wordContainsSplittingCharacter(thisWord) ? splitIndex - 1 : splitIndex));
+        }
+        if (VERBOSE) {
+            Log.i(TAG, "Splitting long word " + thisWord + " into " + thisWord.substring(0, splitIndex) +
+                    " and " + thisWord.substring(splitIndex));
+        }
         return splitIndex;
     }
+
+    private boolean wordContainsSplittingCharacter(String word) {
+        return (word.contains(".") || word.contains("-"));
+    }
+
 
     private void printLastWord() {
         if (mWordArray != null) {
@@ -206,6 +276,12 @@ public class Spritzer {
         }
     }
 
+    /**
+     * Applies the given String to this Spritzer's TextView,
+     * padding the beginning if necessary to align the pivot character.
+     * Styles the pivot character.
+     * @param word
+     */
     private void printWord(String word) {
         int startSpan = 0;
         int endSpan = 0;
@@ -251,22 +327,27 @@ public class Spritzer {
         return mPlaying;
     }
 
+    /**
+     * Begin the background timer thread
+     */
     private void startTimerThread() {
         synchronized (mPlayingSync) {
             if (!mSpritzThreadStarted) {
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        if (VERBOSE)
+                        if (VERBOSE) {
                             Log.i(TAG, "Starting spritzThread with queue length " + mWordQueue.size());
+                        }
                         mPlaying = true;
                         mSpritzThreadStarted = true;
                         while (mPlayingRequested) {
                             try {
                                 processNextWord();
                                 if (mWordQueue.isEmpty()) {
-                                    if (VERBOSE)
+                                    if (VERBOSE) {
                                         Log.i(TAG, "Queue is empty after processNextWord. Pausing");
+                                    }
                                     mPlayingRequested = false;
                                 }
                             } catch (InterruptedException e) {
@@ -305,6 +386,12 @@ public class Spritzer {
         }
     }
 
+    /**
+     * A Handler intended for creation on the Main thread.
+     * Messages are intended to be passed from a background
+     * timing thread. This Handler communicates timing
+     * thread events to the Main thread for UI update.
+     */
     protected static class SpritzHandler extends Handler {
         private WeakReference<Spritzer> mWeakSpritzer;
 
