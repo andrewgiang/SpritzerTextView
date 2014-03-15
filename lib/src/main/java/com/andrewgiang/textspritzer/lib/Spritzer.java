@@ -26,10 +26,13 @@ public class Spritzer {
 
     protected static final int MAX_WORD_LENGTH = 13;
     protected static final int CHARS_LEFT_OF_PIVOT = 3;
+
     protected String[] mWordArray;                  // The current list of words
     protected ArrayDeque<String> mWordQueue;        // The queue being actively displayed
+
     protected TextView mTarget;
     protected int mWPM;
+
     protected Handler mSpritzHandler;
     protected Object mPlayingSync = new Object();
     protected boolean mPlaying;
@@ -38,6 +41,19 @@ public class Spritzer {
 
     protected int mCurWordIdx;
     private ProgressBar mProgressBar;
+
+    public interface OnCompletionListener {
+
+        public void onComplete();
+
+    }
+
+    public void setOnCompletionListener(OnCompletionListener onCompletionListener) {
+        mOnCompletionListener = onCompletionListener;
+    }
+
+    private OnCompletionListener mOnCompletionListener;
+
 
     public Spritzer(TextView target) {
         init();
@@ -140,6 +156,10 @@ public class Spritzer {
                     mSpritzHandler.sendMessage(mSpritzHandler.obtainMessage(MSG_PRINT_WORD, "  "));
                     Thread.sleep(getInterWordDelay());
                 }
+            }
+        } else {
+            if (mOnCompletionListener != null) {
+                mOnCompletionListener.onComplete();
             }
         }
         updateProgress();

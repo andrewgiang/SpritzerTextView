@@ -15,10 +15,19 @@ import android.widget.TextView;
  * Created by andrewgiang on 3/3/14.
  */
 public class SpritzerTextView extends TextView implements View.OnClickListener {
-
+    /**
+     * Interface definition for a callback to be invoked when the
+     * clickControls are enabled and the view is clicked
+     */
     public static interface OnClickControlListener {
+        /**
+         * Called when the spritzer pauses upon click
+         */
         void onPause();
 
+        /**
+         * Called when the spritzer plays upon clicked
+         */
         void onPlay();
     }
 
@@ -26,14 +35,26 @@ public class SpritzerTextView extends TextView implements View.OnClickListener {
     public static final int PAINT_WIDTH_DP = 4;          // thickness of spritz guide bars in dp
     // For optimal drawing should be an even number
 
-    private OnClickControlListener mClickControlListener;
     private Spritzer mSpritzer;
     private Paint mPaintGuides;
     private float mPaintWidthPx;
     private String mTestString;
     private boolean mDefaultClickListener = false;
     private int mAdditonalPadding;
-    private ProgressBar mProgressBar;
+
+    /**
+     * Register a callback for when the view has been clicked
+     * <p/>
+     * Note: it is mandatory to use the clickControls
+     *
+     * @param listener
+     */
+    public void setOnClickControlListener(OnClickControlListener listener) {
+        mClickControlListener = listener;
+    }
+
+    private OnClickControlListener mClickControlListener;
+
 
     public SpritzerTextView(Context context) {
         super(context);
@@ -131,10 +152,6 @@ public class SpritzerTextView extends TextView implements View.OnClickListener {
 
     }
 
-    public void setOnClickControlListener(OnClickControlListener listener) {
-        mClickControlListener = listener;
-    }
-
     private int getPivotIndicatorLength() {
 
         return getPaint().getFontMetricsInt().bottom;
@@ -182,6 +199,17 @@ public class SpritzerTextView extends TextView implements View.OnClickListener {
     }
 
     /**
+     * If true, this view will automatically pause or play spritz text upon view clicks
+     * <p/>
+     * If false, the callback OnClickControls are not invoked and
+     *
+     * @param useDefaultClickControls
+     */
+    public void setUseClickControls(boolean useDefaultClickControls) {
+        mDefaultClickListener = useDefaultClickControls;
+    }
+
+    /**
      * Will play the spritz text that was set in setSpritzText
      */
     public void play() {
@@ -201,6 +229,9 @@ public class SpritzerTextView extends TextView implements View.OnClickListener {
 
     }
 
+    public void setOnCompletionListener(Spritzer.OnCompletionListener listener) {
+        mSpritzer.setOnCompletionListener(listener);
+    }
     public Spritzer getSpritzer() {
         return mSpritzer;
     }
