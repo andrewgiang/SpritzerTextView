@@ -6,6 +6,7 @@ import android.widget.ProgressBar;
 import android.widget.SeekBar;
 import android.widget.Toast;
 
+import com.andrewgiang.textspritzer.lib.Spritzer;
 import com.andrewgiang.textspritzer.lib.SpritzerTextView;
 
 public class MainActivity extends ActionBarActivity {
@@ -47,6 +48,14 @@ public class MainActivity extends ActionBarActivity {
             @Override
             public void onPlay() {
                 Toast.makeText(MainActivity.this, "Spritzer is playing", Toast.LENGTH_SHORT).show();
+
+            }
+        });
+
+        mSpritzerTextView.setOnCompletionListener(new Spritzer.OnCompletionListener() {
+            @Override
+            public void onComplete() {
+                Toast.makeText(MainActivity.this, "Spritzer is finished", Toast.LENGTH_SHORT).show();
 
             }
         });

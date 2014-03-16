@@ -230,6 +230,7 @@ public class SpritzerTextView extends TextView implements View.OnClickListener {
     }
 
     public void setOnCompletionListener(Spritzer.OnCompletionListener listener) {
+
         mSpritzer.setOnCompletionListener(listener);
     }
     public Spritzer getSpritzer() {

@@ -21,7 +21,7 @@ import java.util.Arrays;
  */
 public class Spritzer {
     protected static final String TAG = "Spritzer";
-    protected static final boolean VERBOSE = false;
+    protected static final boolean VERBOSE = BuildConfig.DEBUG;
 
     protected static final int MSG_PRINT_WORD = 1;
 
@@ -192,10 +192,6 @@ public class Spritzer {
                     Thread.sleep(getInterWordDelay());
                 }
             }
-        } else {
-            if (mOnCompletionListener != null) {
-                mOnCompletionListener.onComplete();
-            }
         }
         updateProgress();
     }
@@ -348,13 +344,27 @@ public class Spritzer {
                                     if (VERBOSE) {
                                         Log.i(TAG, "Queue is empty after processNextWord. Pausing");
                                     }
+                                    mTarget.post(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            if (mOnCompletionListener != null) {
+                                                mOnCompletionListener.onComplete();
+                                            }
+                                        }
+                                    });
                                     mPlayingRequested = false;
+
+                                } else {
+                                    Log.i(TAG, mWordQueue.toString());
                                 }
                             } catch (InterruptedException e) {
                                 e.printStackTrace();
                             }
                         }
-                        if (VERBOSE) Log.i(TAG, "Stopping spritzThread");
+
+
+                        if (VERBOSE)
+                            Log.i(TAG, "Stopping spritzThread");
                         mPlaying = false;
                         mSpritzThreadStarted = false;
 
