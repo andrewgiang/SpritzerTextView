@@ -4,7 +4,7 @@ Quick Start Guide
 Usage
 ------------
 
-The library is released to maven central as an aar so all your need to do is add the following dependency to your build.gradle
+This library is released to maven central as an `aar` so all you need to do is add the following dependency to your `build.gradle`
 
 ```
 dependencies {  
@@ -19,12 +19,11 @@ dependencies {
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:typeface="monospace"
-        app:clickControls="true"
-        />
+        app:clickControls="true"/>
 ```
 ######Note:
 * Font must be a monospaced type font
-* Add ```xmlns:app="http://schemas.android.com/apk/res-auto"``` to your root layout to use clickControls
+* Add ```xmlns:app="http://schemas.android.com/apk/res-auto"``` to your root layout to use `clickControls`
 
 
 
@@ -49,7 +48,7 @@ spritzerTV.pause(); // Pauses the spritzer can be resumed with the play() method
 Customizations
 ------------
 
-###Set a OnClickControlsListener listener
+###Set a `OnClickControlsListener` listener
 ```
 spritzerTV.setOnClickControlListener(new SpritzerTextView.OnClickControlListener() {
 
