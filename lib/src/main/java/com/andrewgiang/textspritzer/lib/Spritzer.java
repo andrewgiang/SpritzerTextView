@@ -21,7 +21,7 @@ import java.util.Arrays;
  */
 public class Spritzer {
     protected static final String TAG = "Spritzer";
-    protected static final boolean VERBOSE = BuildConfig.DEBUG;
+    protected static final boolean VERBOSE = false;
 
     protected static final int MSG_PRINT_WORD = 1;
 
