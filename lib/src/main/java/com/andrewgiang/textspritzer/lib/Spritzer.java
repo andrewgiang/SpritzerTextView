@@ -74,11 +74,13 @@ public class Spritzer {
         setMaxProgress();
         refillWordQueue();
     }
+
     private void setMaxProgress() {
         if (mWordArray != null && mProgressBar != null) {
             mProgressBar.setMax(mWordArray.length);
         }
     }
+
     private void createWordArrayFromString(String input) {
         mWordArray = input
                 .replaceAll("/\\s+/g", " ")      // condense adjacent spaces
@@ -109,6 +111,7 @@ public class Spritzer {
     /**
      * Set the target Word Per Minute rate.
      * Effective immediately.
+     *
      * @param wpm
      */
     public void setWpm(int wpm) {
@@ -119,6 +122,7 @@ public class Spritzer {
      * Swap the target TextView. Call this if your
      * host Activity is Destroyed and Re-Created.
      * Effective immediately.
+     *
      * @param target
      */
     public void swapTextView(TextView target) {
@@ -166,11 +170,11 @@ public class Spritzer {
     /**
      * Read the current head of mWordQueue and
      * submit the appropriate Messages to mSpritzHandler.
-     *
+     * <p/>
      * Split long words y submitting the first segment of a word
      * and placing the second at the head of mWordQueue for processing
      * during the next cycle.
-     *
+     * <p/>
      * Must be called on a background thread, as this method uses
      * {@link Thread#sleep(long)} to time pauses in display.
      *
@@ -231,7 +235,7 @@ public class Spritzer {
      * @param thisWord
      * @return the index on which to split the given String
      */
-    private int findSplitIndex(String thisWord){
+    private int findSplitIndex(String thisWord) {
         int splitIndex;
         // Split long words, at hyphen or dot if present.
         if (thisWord.contains("-")) {
@@ -276,6 +280,7 @@ public class Spritzer {
      * Applies the given String to this Spritzer's TextView,
      * padding the beginning if necessary to align the pivot character.
      * Styles the pivot character.
+     *
      * @param word
      */
     private void printWord(String word) {
@@ -354,8 +359,6 @@ public class Spritzer {
                                     });
                                     mPlayingRequested = false;
 
-                                } else {
-                                    Log.i(TAG, mWordQueue.toString());
                                 }
                             } catch (InterruptedException e) {
                                 e.printStackTrace();
