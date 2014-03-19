@@ -233,6 +233,14 @@ public class SpritzerTextView extends TextView implements View.OnClickListener {
 
         mSpritzer.setOnCompletionListener(listener);
     }
+
+    /**
+     * @param strategy @see {@link com.andrewgiang.textspritzer.lib.DelayStrategy#delayMultiplier(String)}
+     */
+    public void setDelayStrategy(DelayStrategy strategy) {
+        mSpritzer.setDelayStrategy(strategy);
+    }
+
     public Spritzer getSpritzer() {
         return mSpritzer;
     }
