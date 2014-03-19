@@ -264,4 +264,8 @@ public class SpritzerTextView extends TextView implements View.OnClickListener {
     public int getCurrentWordIndex() {
         return mSpritzer.mCurWordIdx;
     }
+
+    public int getMinutesRemainingInQueue() {
+        return mSpritzer.getMinutesRemainingInQueue();
+    }
 }

@@ -2,10 +2,10 @@ SpritzerTextView
 ============
 
 [![Build Status](https://travis-ci.org/andrewgiang/SpritzerTextView.png?branch=master)](https://travis-ci.org/andrewgiang/SpritzerTextView)
-A simplified TextView wrapper that originated by the Spritzer from  [OpenSpritz-Android](https://github.com/OnlyInAmerica/OpenSpritz-Android) to "spritz" text.
+A simplified TextView wrapper that originated from the Spritzer in  [OpenSpritz-Android](https://github.com/OnlyInAmerica/OpenSpritz-Android) to "spritz" text.
 
 Note: This library has nothing to do with SpritzInc.
-######This library is a preview, api may change between versions.
+######This library is a preview, api may change before stable release.
 
 ![SpritzerTextView example](http://i.imgur.com/mkeViYY.gif)
 
