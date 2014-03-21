@@ -49,7 +49,7 @@ public class Spritzer {
 
     }
 
-    private DelayStrategy mDelayStrategy;
+    private WordStrategy mWordStrategy;
 
     public void setOnCompletionListener(OnCompletionListener onCompletionListener) {
         mOnCompletionListener = onCompletionListener;
@@ -92,7 +92,7 @@ public class Spritzer {
 
     protected void init() {
 
-        mDelayStrategy = new DefaultDelayStrategy();
+        mWordStrategy = new DefaultWordStrategy();
         mWordQueue = new ArrayDeque<String>();
         mWPM = 500;
         mPlaying = false;
@@ -189,14 +189,16 @@ public class Spritzer {
             String word = mWordQueue.remove();
             mCurWordIdx += 1;
             // Split long words, at hyphen if present
+
+            wordObj mWordObj = mWordStrategy.parseWord(word, getInterWordDelay());
+
+            word = mWordObj.getParsedWord();
+            Log.i(TAG, "mWordObj.getParsedWord() = " + word);
             word = splitLongWord(word);
 
             mSpritzHandler.sendMessage(mSpritzHandler.obtainMessage(MSG_PRINT_WORD, word));
 
-            final int delayMultiplier = mDelayStrategy.delayMultiplier(word);
-            //Do not allow multiplier that is less than 1
-            final int wordDelay = getInterWordDelay() * (mDelayStrategy != null ? delayMultiplier < 1 ? 1 : delayMultiplier : 1);
-            Thread.sleep(wordDelay);
+            Thread.sleep(mWordObj.getDelay());
 
         }
         updateProgress();
@@ -394,13 +396,8 @@ public class Spritzer {
         }
     }
 
-
-    /**
-     * @param strategy @see{@link com.andrewgiang.textspritzer.lib.DelayStrategy#delayMultiplier(String) }
-     */
-    public void setDelayStrategy(DelayStrategy strategy) {
-        mDelayStrategy = strategy;
-
+    public void setWordStrategy(WordStrategy strategy) {
+        mWordStrategy = strategy;
     }
 
     /**

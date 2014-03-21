@@ -8,6 +8,8 @@ import android.widget.Toast;
 
 import com.andrewgiang.textspritzer.lib.Spritzer;
 import com.andrewgiang.textspritzer.lib.SpritzerTextView;
+import com.andrewgiang.textspritzer.lib.WordStrategy;
+import com.andrewgiang.textspritzer.lib.wordObj;
 
 public class MainActivity extends ActionBarActivity {
 
@@ -25,7 +27,7 @@ public class MainActivity extends ActionBarActivity {
         //Review the view and set text to be spritzed
         mSpritzerTextView = (SpritzerTextView) findViewById(R.id.spritzTV);
         mSpritzerTextView.setSpritzText("OpenSpritz has nothing to do with Spritz Incorporated. " +
-                "This is an open source, community created project, made with love because Spritz is " +
+                "This is an open source, community created project, made with love//spritzerpause6000 because Spritz is " +
                 "such an awesome technique for reading with.");
 
 
@@ -60,15 +62,32 @@ public class MainActivity extends ActionBarActivity {
             }
         });
 
-//        mSpritzerTextView.setDelayStrategy(new DelayStrategy() {
-//            @Override
-//            public int delayMultiplier(String word) {
-//                if(word.contains("-")){
-//                  return 5;
-//                }
-//                return 1;
-//            }
-//        });
+        mSpritzerTextView.setWordStrategy(new WordStrategy() {
+            @Override
+            public wordObj parseWord(String word, int millisecondsPerWord){
+                wordObj retWordObj = new wordObj();
+
+                if (word.length() >= 6 || word.contains(",") || word.contains(":") || word.contains(";") || word.contains(".") || word.contains("?") || word.contains("!") || word.contains("\"")) {
+                    // Set Delay for punctuation and length
+                    retWordObj.setDelay(3 * millisecondsPerWord);
+                } else {
+                    retWordObj.setDelay(1 * millisecondsPerWord);
+                }
+
+                if (word.contains("//spritzerpause")) {
+                    // Set delay from text if we find //spritzerpause in the text
+                    String[] splitWord = word.split("//spritzerpause");
+                    retWordObj.setParsedWord(splitWord[0]);
+                    retWordObj.setDelay(Integer.parseInt(splitWord[1]));
+                } else {
+                    retWordObj.setParsedWord(word);
+                }
+
+                return retWordObj;
+            }
+        });
+
+
 
 
         setupSeekBars();
