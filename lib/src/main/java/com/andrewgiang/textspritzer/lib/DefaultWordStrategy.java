@@ -1,15 +1,13 @@
 package com.andrewgiang.textspritzer.lib;
 
-import android.util.Log;
-
 /**
  * Created by carmstrong on 3/20/14.
  */
 public class DefaultWordStrategy implements WordStrategy{
 
     @Override
-    public wordObj parseWord(String word, int millisecondsPerWord){
-        wordObj retWordObj = new wordObj();
+    public WordObj parseWord(String word, int millisecondsPerWord){
+        WordObj retWordObj = new WordObj();
 
         // Set Delay for punctuation and length
         if (word.length() >= 6 || word.contains(",") || word.contains(":") || word.contains(";") || word.contains(".") || word.contains("?") || word.contains("!") || word.contains("\"")) {

@@ -8,8 +8,8 @@ import android.widget.Toast;
 
 import com.andrewgiang.textspritzer.lib.Spritzer;
 import com.andrewgiang.textspritzer.lib.SpritzerTextView;
+import com.andrewgiang.textspritzer.lib.WordObj;
 import com.andrewgiang.textspritzer.lib.WordStrategy;
-import com.andrewgiang.textspritzer.lib.wordObj;
 
 public class MainActivity extends ActionBarActivity {
 
@@ -64,8 +64,8 @@ public class MainActivity extends ActionBarActivity {
 
         mSpritzerTextView.setWordStrategy(new WordStrategy() {
             @Override
-            public wordObj parseWord(String word, int millisecondsPerWord){
-                wordObj retWordObj = new wordObj();
+            public WordObj parseWord(String word, int millisecondsPerWord){
+                WordObj retWordObj = new WordObj();
 
                 if (word.length() >= 6 || word.contains(",") || word.contains(":") || word.contains(";") || word.contains(".") || word.contains("?") || word.contains("!") || word.contains("\"")) {
                     // Set Delay for punctuation and length

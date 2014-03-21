@@ -190,7 +190,7 @@ public class Spritzer {
             mCurWordIdx += 1;
             // Split long words, at hyphen if present
 
-            wordObj mWordObj = mWordStrategy.parseWord(word, getInterWordDelay());
+            WordObj mWordObj = mWordStrategy.parseWord(word, getInterWordDelay());
 
             word = mWordObj.getParsedWord();
             Log.i(TAG, "mWordObj.getParsedWord() = " + word);

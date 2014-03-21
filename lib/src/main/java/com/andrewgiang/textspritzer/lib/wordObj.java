@@ -3,7 +3,7 @@ package com.andrewgiang.textspritzer.lib;
 /**
  * Created by carmstrong on 3/20/14.
  */
-public class wordObj {
+public class WordObj {
     int delay;
 
     public int getDelay() {
