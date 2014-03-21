@@ -49,6 +49,8 @@ public class Spritzer {
 
     }
 
+    private DelayStrategy mDelayStrategy;
+
     public void setOnCompletionListener(OnCompletionListener onCompletionListener) {
         mOnCompletionListener = onCompletionListener;
     }
@@ -89,6 +91,8 @@ public class Spritzer {
 
 
     protected void init() {
+
+        mDelayStrategy = new DefaultDelayStrategy();
         mWordQueue = new ArrayDeque<String>();
         mWPM = 500;
         mPlaying = false;
@@ -188,14 +192,12 @@ public class Spritzer {
             word = splitLongWord(word);
 
             mSpritzHandler.sendMessage(mSpritzHandler.obtainMessage(MSG_PRINT_WORD, word));
-            Thread.sleep(getInterWordDelay() * delayMultiplierForWord(word));
-            // If word is end of a sentence, add three blanks
-            if (word.contains(".") || word.contains("?") || word.contains("!")) {
-                for (int x = 0; x < 3; x++) {
-                    mSpritzHandler.sendMessage(mSpritzHandler.obtainMessage(MSG_PRINT_WORD, "  "));
-                    Thread.sleep(getInterWordDelay());
-                }
-            }
+
+            final int delayMultiplier = mDelayStrategy.delayMultiplier(word);
+            //Do not allow multiplier that is less than 1
+            final int wordDelay = getInterWordDelay() * (mDelayStrategy != null ? delayMultiplier < 1 ? 1 : delayMultiplier : 1);
+            Thread.sleep(wordDelay);
+
         }
         updateProgress();
     }
@@ -377,13 +379,6 @@ public class Spritzer {
         }
     }
 
-    private int delayMultiplierForWord(String word) {
-        // double rest if length > 6 or contains (.,!?)
-        if (word.length() >= 6 || word.contains(",") || word.contains(":") || word.contains(";") || word.contains(".") || word.contains("?") || word.contains("!") || word.contains("\"")) {
-            return 3;
-        }
-        return 1;
-    }
 
     public String[] getWordArray() {
         return mWordArray;
@@ -397,6 +392,15 @@ public class Spritzer {
         if (bar != null) {
             mProgressBar = bar;
         }
+    }
+
+
+    /**
+     * @param strategy @see{@link com.andrewgiang.textspritzer.lib.DelayStrategy#delayMultiplier(String) }
+     */
+    public void setDelayStrategy(DelayStrategy strategy) {
+        mDelayStrategy = strategy;
+
     }
 
     /**
@@ -432,4 +436,6 @@ public class Spritzer {
         }
 
     }
+
+
 }

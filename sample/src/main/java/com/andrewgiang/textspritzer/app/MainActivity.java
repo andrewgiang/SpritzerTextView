@@ -60,6 +60,16 @@ public class MainActivity extends ActionBarActivity {
             }
         });
 
+//        mSpritzerTextView.setDelayStrategy(new DelayStrategy() {
+//            @Override
+//            public int delayMultiplier(String word) {
+//                if(word.contains("-")){
+//                  return 5;
+//                }
+//                return 1;
+//            }
+//        });
+
 
         setupSeekBars();
 
