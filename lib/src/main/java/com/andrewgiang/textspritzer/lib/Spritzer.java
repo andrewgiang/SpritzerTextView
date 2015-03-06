@@ -1,10 +1,12 @@
 package com.andrewgiang.textspritzer.lib;
 
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Handler;
 import android.os.Message;
 import android.text.Spannable;
 import android.text.SpannableString;
-import android.text.style.TextAppearanceSpan;
+import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.widget.ProgressBar;
 import android.widget.TextView;
