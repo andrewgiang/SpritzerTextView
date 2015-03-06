@@ -33,6 +33,7 @@ public class Spritzer {
 
     protected TextView mTarget;
     protected int mWPM;
+    protected static final ForegroundColorSpan spanRed = new ForegroundColorSpan(Color.RED);
 
     protected Handler mSpritzHandler;
     protected Object mPlayingSync = new Object();
@@ -61,6 +62,7 @@ public class Spritzer {
     public Spritzer(TextView target) {
         init();
         mTarget = target;
+        mTarget.setTypeface(Typeface.MONOSPACE);
         mSpritzHandler = new SpritzHandler(this);
     }
 
@@ -317,9 +319,8 @@ public class Spritzer {
         }
 
         Spannable spanRange = new SpannableString(word);
-        TextAppearanceSpan tas = new TextAppearanceSpan(mTarget.getContext(), R.style.PivotLetter);
-        spanRange.setSpan(tas, startSpan, endSpan, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-        mTarget.setText(spanRange);
+        spanRange.setSpan(spanRed, startSpan, endSpan , 0);
+        mTarget.setText(spanRange, TextView.BufferType.SPANNABLE);
     }
 
     public void pause() {
