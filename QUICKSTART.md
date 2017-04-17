@@ -12,7 +12,7 @@ dependencies {
 }
 ```
 
-###Add the SpritzerTextView to your layout
+### Add the SpritzerTextView to your layout
 
 ```
     <com.andrewgiang.textspritzer.lib.SpritzerTextView
@@ -21,7 +21,7 @@ dependencies {
         android:typeface="monospace"
         app:clickControls="true"/>
 ```
-######Note:
+###### Note:
 * Font must be a monospaced type font
 * Add ```xmlns:app="http://schemas.android.com/apk/res-auto"``` to your root layout to use `clickControls`
 
@@ -33,12 +33,12 @@ dependencies {
 final SpritzerTextView spritzerTV = (SpritzerTextView) findViewById(R.id.spritzTV);
 
 ```
-####Set Spritzter Text
+#### Set Spritzter Text
 ```
  spritzerTV.setSpritzText("add the spritz text here");
 ```
 
-####Play and Pause the Spritzer
+#### Play and Pause the Spritzer
 
 ```
 spritzerTV.play(); // Play the text set in method setSpritzText()
@@ -48,7 +48,7 @@ spritzerTV.pause(); // Pauses the spritzer can be resumed with the play() method
 Customizations
 ------------
 
-###Set a `OnClickControlsListener` listener
+### Set a `OnClickControlsListener` listener
 ```
 spritzerTV.setOnClickControlListener(new SpritzerTextView.OnClickControlListener() {
 
