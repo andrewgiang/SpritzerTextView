@@ -1,10 +1,12 @@
 package com.andrewgiang.textspritzer.lib;
 
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Handler;
 import android.os.Message;
 import android.text.Spannable;
 import android.text.SpannableString;
-import android.text.style.TextAppearanceSpan;
+import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -33,6 +35,7 @@ public class Spritzer {
 
     protected TextView mTarget;
     protected int mWPM;
+    protected static final ForegroundColorSpan spanRed = new ForegroundColorSpan(Color.RED);
 
     protected Handler mSpritzHandler;
     protected Object mPlayingSync = new Object();
@@ -61,6 +64,7 @@ public class Spritzer {
     public Spritzer(TextView target) {
         init();
         mTarget = target;
+        mTarget.setTypeface(Typeface.MONOSPACE);
         mSpritzHandler = new SpritzHandler(this);
     }
 
@@ -317,9 +321,8 @@ public class Spritzer {
         }
 
         Spannable spanRange = new SpannableString(word);
-        TextAppearanceSpan tas = new TextAppearanceSpan(mTarget.getContext(), R.style.PivotLetter);
-        spanRange.setSpan(tas, startSpan, endSpan, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-        mTarget.setText(spanRange);
+        spanRange.setSpan(spanRed, startSpan, endSpan , 0);
+        mTarget.setText(spanRange, TextView.BufferType.SPANNABLE);
     }
 
     public void pause() {
